@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProjectResource;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 
 class ProjectController extends Controller
@@ -22,12 +24,10 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
         //
-        $project = $request->user->projects()->create($request->only([
-            'name', 'description', 'status',
-        ]));
+        $project = $request->user->projects()->create($request->validated());
 
         return new ProjectResource($project);
     }
@@ -45,12 +45,10 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
         //
-        $project->update($request->only([
-            'name', 'description', 'status'
-        ]));
+        $project->update($request->validated());
 
         return new ProjectResource($project);
     }
