@@ -38,6 +38,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         //
+        $this->authorize('view', $project);
         return new ProjectResource($project);
 
     }
@@ -48,6 +49,8 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         //
+        $this->authorize('update', $project);
+
         $project->update($request->validated());
 
         return new ProjectResource($project);
@@ -59,6 +62,8 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+        $this->authorize('delete', $project);
+
         $project->delete($project);
         return response()->noContent();
     }
